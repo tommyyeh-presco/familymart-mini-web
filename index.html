@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>比比昂×Amazon</title>
+<style>
+  :root { --teal:#19b6c9; --teal-d:#0e9aab; --green:#1aaf5d; --ink:#222; --muted:#888; --bg:#f4f5f7; }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body { margin:0; padding:0; font-family:-apple-system,"PingFang TC","Helvetica Neue",sans-serif; color:var(--ink); background:#fff; }
+  body { padding-bottom:24px; }
+
+  /* top bar */
+  header { position:sticky; top:0; z-index:10; display:flex; align-items:center; gap:14px;
+           padding:14px 16px; background:#fff; border-bottom:1px solid #eee; }
+  header .icon { font-size:22px; color:#333; line-height:1; }
+  header .title { flex:1; text-align:center; font-size:19px; font-weight:700; }
+  header .badge { position:relative; }
+  header .badge .dot { position:absolute; top:-6px; right:-8px; background:#e23; color:#fff;
+                       font-size:11px; min-width:16px; height:16px; border-radius:8px; text-align:center; line-height:16px; padding:0 3px; }
+  header .badge.b .dot { background:var(--teal); }
+
+  /* notice */
+  .notice { display:flex; gap:8px; align-items:center; margin:12px; padding:12px 14px;
+            background:#eaf6f8; border-radius:10px; font-size:13px; color:#0c7a89; }
+  .notice b { color:#e23; }
+
+  /* member cards */
+  .cards { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:0 12px 8px; }
+  .card { border:1px solid #e6e6e6; border-radius:12px; padding:12px; font-size:12px; line-height:1.5; }
+  .card .h { color:var(--green); font-weight:700; font-size:14px; margin-bottom:6px; }
+  .card .lineid { background:#f0fbf3; border:1px dashed #bfe6cc; border-radius:8px;
+                  padding:6px 8px; margin-top:6px; font-weight:700; color:#127c3e; }
+
+  /* section title */
+  .sec-title { font-size:20px; font-weight:800; margin:18px 16px 12px; }
+
+  /* category grid */
+  .cats { display:grid; grid-template-columns:repeat(4,1fr); gap:16px 8px; padding:0 12px; }
+  .cat { display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .cat .ic { width:54px; height:54px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+             font-size:26px; background:#e9f7f9; color:var(--teal-d); position:relative; }
+  .cat .lbl { font-size:13px; color:#333; }
+  .cat .tag { position:absolute; top:-6px; right:-6px; font-size:9px; font-weight:700; color:#fff;
+              background:#e23; padding:1px 5px; border-radius:8px; }
+  .cat .tag.sale { background:#f5a623; }
+  .pager { display:flex; justify-content:center; gap:6px; margin:14px 0 4px; }
+  .pager i { width:26px; height:4px; border-radius:2px; background:#e2e2e2; }
+  .pager i.on { background:#f5a623; width:34px; }
+
+  /* promo banner */
+  .promo { margin:14px 12px; border-radius:16px; overflow:hidden;
+           background:linear-gradient(135deg,#16c0d4,#0e9aab); color:#fff; padding:18px 16px; position:relative; }
+  .promo .jp { font-size:13px; opacity:.95; }
+  .promo .big { font-size:30px; font-weight:900; letter-spacing:1px; margin:4px 0; }
+  .promo .pink { color:#ff5fa2; }
+  .promo .row { display:flex; align-items:center; justify-content:space-between; margin-top:8px; }
+  .promo .pill { background:#fff; color:var(--teal-d); font-weight:800; border-radius:20px; padding:6px 14px; font-size:13px; }
+  .promo .off { font-size:30px; font-weight:900; }
+
+  /* flash sale */
+  .flash { margin:14px 12px; background:#ff4d4f; border-radius:16px; padding:16px; color:#fff; }
+  .flash .top { display:flex; align-items:center; justify-content:space-between; }
+  .flash .label { font-size:22px; font-weight:900; }
+  .flash .from { font-size:13px; opacity:.95; }
+  .flash .timer { display:flex; align-items:center; gap:6px; margin-top:12px; font-weight:700; }
+  .flash .seg { background:#fff; color:#e23; border-radius:6px; padding:4px 8px; min-width:34px; text-align:center; font-size:16px; }
+  .flash .more { margin-left:auto; font-size:14px; opacity:.95; }
+  .flash .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:14px; }
+  .flash .item { background:#fff; color:#333; border-radius:10px; padding:10px; text-align:center; }
+  .flash .item .price { color:#e23; font-weight:900; margin-top:4px; }
+</style>
+</head>
+<body>
+  <header>
+    <span class="icon">&#9776;</span>
+    <span class="icon">&#128269;</span>
+    <span class="title">比比昂&times;Amazon</span>
+    <span class="icon badge"><span>&#128722;</span><span class="dot">0</span></span>
+    <span class="icon badge b"><span>&#128100;</span><span class="dot">B</span></span>
+  </header>
+
+  <div class="notice"><span>&#128226;</span><span><b>重要</b> 【防詐騙提醒】比比昂不會以訂單異常、重複扣款等理由要求操作 ATM。</span></div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="h">&#9888; 親愛的會員 您好！</div>
+      台灣詐騙橫行，請務必提高警覺，留意不要與假的比比昂 LINE 客服聯絡。
+      <div class="lineid">官方 LINE 客服 ID：@bibiancb</div>
+    </div>
+    <div class="card">
+      <div class="h" style="color:#127c3e;">官方 LINE 客服說明</div>
+      &#9989; <b>bibian比比昂</b><br/>綠色勾勾代表官方認證<br/>正確名稱 bibian比比昂<br/>
+      <span style="color:var(--muted);">PChome 子公司 海外代購代標</span>
+    </div>
+  </div>
+
+  <div class="sec-title">人氣分類</div>
+  <div class="cats">
+    <div class="cat"><div class="ic">&#128138;<span class="tag">HOT</span></div><div class="lbl">綜合保健</div></div>
+    <div class="cat"><div class="ic">&#127836;</div><div class="lbl">人氣泡麵</div></div>
+    <div class="cat"><div class="ic">&#128132;<span class="tag">HOT</span></div><div class="lbl">日系美妝</div></div>
+    <div class="cat"><div class="ic">&#129532;</div><div class="lbl">護膚保養</div></div>
+    <div class="cat"><div class="ic">&#128640;</div><div class="lbl">快速到貨</div></div>
+    <div class="cat"><div class="ic">&#127817;</div><div class="lbl">日本零食</div></div>
+    <div class="cat"><div class="ic">&#127873;<span class="tag sale">SALE</span></div><div class="lbl">伴手禮</div></div>
+    <div class="cat"><div class="ic">&#129529;</div><div class="lbl">家事清潔</div></div>
+  </div>
+  <div class="pager"><i class="on"></i><i></i><i></i></div>
+
+  <div class="promo">
+    <div class="jp">&#127471;&#127477; 日本發燒</div>
+    <div class="big">好物推薦 <span class="pink">免空運費</span></div>
+    <div class="row">
+      <span class="pill">滿 $1,499</span>
+      <span style="font-size:12px;opacity:.9;">6.20 ~ 6.30</span>
+      <span class="off">3%<span style="font-size:13px;"> OFF</span></span>
+    </div>
+  </div>
+
+  <div class="flash">
+    <div class="top">
+      <div><div class="label">限時搶購</div><div class="from">1 元起</div></div>
+      <div class="timer">
+        <span class="seg" id="d">00</span>日
+        <span class="seg" id="h">02</span>時
+        <span class="seg" id="m">14</span>分
+        <span class="more">看更多 &rsaquo;</span>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="item">&#129380;<div class="price">$1</div></div>
+      <div class="item">&#129371;<div class="price">$1</div></div>
+      <div class="item">&#127853;<div class="price">$1</div></div>
+    </div>
+  </div>
+
+  <script>
+    // simple countdown so the flash-sale timer ticks (cosmetic)
+    var total = 2*3600 + 14*60; // 02:14 worth of seconds
+    function pad(n){ return (n<10?"0":"")+n; }
+    function tick(){
+      if (total <= 0) total = 2*3600 + 14*60;
+      var h = Math.floor(total/3600), m = Math.floor((total%3600)/60);
+      document.getElementById("d").textContent = "00";
+      document.getElementById("h").textContent = pad(h);
+      document.getElementById("m").textContent = pad(m);
+      total -= 60;
+    }
+    tick(); setInterval(tick, 1000);
+  </script>
+</body>
+</html>
