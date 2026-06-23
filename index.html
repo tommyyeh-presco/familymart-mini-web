@@ -92,6 +92,13 @@
   .success .chk { font-size:64px; }
   .success h2 { margin:14px 0 6px; }
   .success .ord { color:var(--muted); font-size:14px; }
+
+  /* order history */
+  .order { margin:12px 16px; border:1px solid #eee; border-radius:14px; padding:14px; }
+  .order .ohead { display:flex; justify-content:space-between; align-items:center; }
+  .order .ono { font-weight:800; font-size:15px; }
+  .order .ostatus { font-size:12px; color:#fff; background:var(--teal); padding:3px 10px; border-radius:12px; }
+  .order .odate { color:var(--muted); font-size:12px; margin-top:4px; }
 </style>
 </head>
 <body>
@@ -100,7 +107,7 @@
     <span class="icon" onclick="show('home')">&#128269;</span>
     <span class="title">比比昂&times;Amazon</span>
     <button class="icon badge" onclick="openCart()">&#128722;<span class="dot" id="cartCount">0</span></button>
-    <span class="icon">&#128100;</span>
+    <button class="icon" onclick="openOrders()">&#128100;</button>
   </header>
 
   <main>
@@ -166,6 +173,13 @@
     <section id="view-success" class="view">
       <div class="success" id="successBody"></div>
     </section>
+
+    <!-- ORDER HISTORY -->
+    <section id="view-orders" class="view">
+      <button class="back" onclick="show('home')">&lsaquo; 返回</button>
+      <div class="sec-title" style="margin-top:0;">訂單記錄</div>
+      <div id="ordersBody"></div>
+    </section>
   </main>
 
   <script>
@@ -182,6 +196,8 @@
     const byId = id => PRODUCTS.find(p => p.id === id);
     let cart = [];
     try { cart = JSON.parse(localStorage.getItem('bibian_cart') || '[]'); } catch (e) { cart = []; }
+    let orders = [];
+    try { orders = JSON.parse(localStorage.getItem('bibian_orders') || '[]'); } catch (e) { orders = []; }
 
     function persist() { try { localStorage.setItem('bibian_cart', JSON.stringify(cart)); } catch (e) {} renderBadge(); }
     function count() { return cart.reduce((s, i) => s + i.qty, 0); }
@@ -304,14 +320,43 @@
 
     function placeOrder(grand) {
       const ord = 'BB' + Math.floor(100000 + Math.random() * 900000);
+      const lines = cart.map(i => { const p = byId(i.id); return { name: p.name, emoji: p.emoji, qty: i.qty, price: p.price }; });
+      orders.unshift({ id: ord, date: new Date().toISOString(), items: lines, total: grand });
+      try { localStorage.setItem('bibian_orders', JSON.stringify(orders)); } catch (e) {}
       cart = [];
       persist();
       document.getElementById('successBody').innerHTML = `
         <div class="chk">✅</div>
         <h2>訂單成立！</h2>
         <div class="ord">訂單編號 ${ord}<br/>應付金額 ${fmt(grand)}<br/><br/>我們會盡快為您出貨 🚚</div>
-        <button class="cta" style="width:auto;display:inline-block;padding:13px 30px;margin-top:24px;" onclick="show('home')">繼續購物</button>`;
+        <button class="cta" style="width:auto;display:inline-block;padding:13px 30px;margin-top:24px;" onclick="openOrders()">查看訂單記錄</button>
+        <button class="back" style="display:block;margin:10px auto 0;" onclick="show('home')">繼續購物</button>`;
       show('success');
+    }
+
+    function openOrders() {
+      renderOrders();
+      show('orders');
+    }
+    function renderOrders() {
+      const body = document.getElementById('ordersBody');
+      if (orders.length === 0) {
+        body.innerHTML = `<div class="empty">📦<br/>還沒有訂單<br/><br/>
+          <button class="cta" style="width:auto;display:inline-block;padding:12px 28px;" onclick="show('home')">去逛逛</button></div>`;
+        return;
+      }
+      body.innerHTML = orders.map(o => {
+        let when = o.date;
+        try { when = new Date(o.date).toLocaleString('zh-TW', { year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' }); } catch (e) {}
+        const items = o.items.map(it => `<div class="line"><span>${it.emoji} ${it.name} × ${it.qty}</span><span>${fmt(it.price * it.qty)}</span></div>`).join('');
+        return `<div class="order">
+          <div class="ohead"><span class="ono">訂單 ${o.id}</span><span class="ostatus">處理中</span></div>
+          <div class="odate">${when}</div>
+          <div class="summary" style="padding:10px 0 0;">${items}
+            <div class="line total"><span>合計</span><span class="amt">${fmt(o.total)}</span></div>
+          </div>
+        </div>`;
+      }).join('');
     }
 
     renderProductGrid();
